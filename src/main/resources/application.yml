@@ -13,7 +13,7 @@ mybatis:
   mapper-locations: classpath:/mapper/**/*.xml
   configuration:
     cache-enabled: true
-  type-aliases-package: com.plateer.ec1
+  type-aliases-package: com.plateer.ec1.claim com.plateer.ec1.order com.plateer.ec1.promotion com.plateer.ec1.payment
 
 logging:
   level:
