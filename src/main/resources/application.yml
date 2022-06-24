@@ -6,10 +6,14 @@ spring:
     password: 1111
     hikari:
       connection-init-sql: select 1
+      maximum-pool-size: 2
 
 
 mybatis:
   mapper-locations: classpath:/mapper/**/*.xml
+  configuration:
+    cache-enabled: true
+  type-aliases-package: com.plateer.ec1
 
 logging:
   level:
