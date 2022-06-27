@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plateer.ec1.product.mapper.ProductMapper">
+    <select id="getProductList" resultType="productInfoVO">
+        select goods_nm
+             , pgb.goods_no
+             , goods_dlv_tp_cd
+             , goods_tp_cd
+             , item_nm
+             , item_no
+             , prgs_stat_cd
+             , prm_prc
+             , sale_prc
+        from pr_goods_base pgb
+                 inner join pr_item_info pii on pgb.goods_no = pii.goods_no
+    </select>
+</mapper>
