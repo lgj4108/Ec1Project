@@ -1,7 +1,7 @@
 package com.plateer.ec1.order.controller;
 
 import com.plateer.ec1.order.service.OrderService;
-import com.plateer.ec1.order.vo.OrderRequest;
+import com.plateer.ec1.order.vo.OrderRequestVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +15,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/order")
-    public void registOrder(OrderRequest orderRequest) {
-        orderService.order(orderRequest);
+    public void registOrder(OrderRequestVO orderRequestVO) {
+        orderService.order(orderRequestVO);
     }
 }
