@@ -1,12 +1,13 @@
 package com.plateer.ec1.order.vo;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
 @Data
-public class OrderRequestVO {
-    private String ordNo;
+@EqualsAndHashCode(callSuper=false)
+public class OrderRequestVO extends OrderClaimBaseVO{
     private List<OrderProductVO> orderProducts;
     private List<OrderDeliveryAreaVO> orderDeliveryAreas;
     private List<OrderBenefitVO> orderBenefits;

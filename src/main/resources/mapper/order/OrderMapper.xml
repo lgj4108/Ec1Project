@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plateer.ec1.order.mapper.OrderMapper">
+    <select id="getOrdNoNextval" resultType="java.lang.String">
+        select 'O' || to_char(now(), 'YYYYMMDD') || nextval('nextval_ord_no')
+    </select>
+</mapper>

@@ -3,6 +3,7 @@ package com.plateer.ec1.order.controller;
 import com.plateer.ec1.order.service.OrderService;
 import com.plateer.ec1.order.vo.OrderRequestVO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderController {
 
     private final OrderService orderService;
+
+    @GetMapping("/ordNo")
+    public String getOrdNoNextval() {
+        return orderService.getOrdNoNextval();
+    }
 
     @PostMapping("/order")
     public void registOrder(OrderRequestVO orderRequestVO) {

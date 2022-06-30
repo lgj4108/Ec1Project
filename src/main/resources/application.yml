@@ -17,6 +17,7 @@ mybatis:
   configuration:
     cache-enabled: true
     map-underscore-to-camel-case: true
+    jdbc-type-for-null: null
 #  type-aliases-package: com.plateer.ec1.claim com.plateer.ec1.order com.plateer.ec1.promotion com.plateer.ec1.payment
 logging:
   level:
