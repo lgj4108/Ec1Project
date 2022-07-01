@@ -4,26 +4,270 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.plateer.ec1.order.mapper.OrderTrxMapper">
     <insert id="insertOrderHistory" parameterType="opOrdClmMntLog" useGeneratedKeys="true" keyProperty="logSeq">
-        insert into op_ord_clm_mnt_log (
-            ord_no, clm_no, req_pram, sys_reg_dtime, sys_regr_id,
-            sys_mod_dtime, sys_modr_id)
-        values (
-            #{ordNo},
-            #{clmNo},
-            #{reqPram}::json,
-            now(),
-            #{sysRegrId},
-            now(),
-            #{sysModrId}
-            )
+        insert into op_ord_clm_mnt_log (ord_no, clm_no, req_pram, sys_reg_dtime, sys_regr_id,
+                                        sys_mod_dtime, sys_modr_id)
+        values (#{ordNo},
+                #{clmNo},
+                #{reqPram}::json,
+                now(),
+                #{sysRegrId},
+                now(),
+                #{sysModrId})
     </insert>
 
     <update id="updateOrderHistory" parameterType="opOrdClmMntLog">
         update op_ord_clm_mnt_log
         set ins_data = #{insData}::json,
-            upt_data = #{uptData}::json,
-            proc_ccd = #{procCcd}
+            upt_data = #{uptData}::json
+          , proc_ccd = #{procCcd}
         where
             log_seq = #{logSeq};
     </update>
+
+    <insert id="insertOpOrdBase" parameterType="opOrdBase">
+        INSERT INTO OP_ORD_BASE(ORD_NO,
+                                MBR_NO,
+                                ORD_TP_CD,
+                                ORD_SYS_CCD,
+                                ORD_REQ_DTIME,
+                                ORD_CMT_DTIME,
+                                ORD_NM,
+                                ORD_SELL_NO,
+                                ORD_ADDR,
+                                ORD_ADDR_DTL,
+                                RFND_BNK_CK,
+                                RFND_ACCT_NO,
+                                RFND_ACCT_OWN_NM,
+                                SYS_REG_DTIME,
+                                SYS_REGR_ID,
+                                SYS_MODR_ID,
+                                SYS_MOD_DTIME)
+        VALUES (#{ordNo},
+                #{mbrNo},
+                #{ordTpCd},
+                #{ordSysCcd},
+                #{ordReqDtime},
+                #{ordCmtDtime},
+                #{ordNm},
+                #{ordSellNo},
+                #{ordAddr},
+                #{ordAddrDtl},
+                #{rfndBnkCk},
+                #{rfndAcctNo},
+                #{rfndAcctOwnNm},
+                now(),
+                #{sysRegrId},
+                #{sysModrId},
+                now())
+
+    </insert>
+
+    <insert id="insertOpGoodsInfo" parameterType="opGoodsInfo">
+        INSERT INTO OP_GOODS_INFO(ORD_NO,
+                                  ORD_GOODS_NO,
+                                  ORD_ITEM_NO,
+                                  GOODS_SELL_TP_CD,
+                                  GOODS_DLV_TP_CD,
+                                  GOODS_NM,
+                                  ITEM_NM,
+                                  SELL_AMT,
+                                  SELL_DC_AMT,
+                                  SYS_REG_DTIME,
+                                  SYS_REGR_ID,
+                                  SYS_MOD_DTIME,
+                                  SYS_MODR_ID)
+        VALUES (#{ordNo},
+                #{ordGoodsNo},
+                #{ordItemNo},
+                #{goodsSellTpCd},
+                #{goodsDlvTpCd},
+                #{goodsNm},
+                #{itemNm},
+                #{sellAmt},
+                #{sellDcAmt},
+                now(),
+                #{sysRegrId},
+                now(),
+                #{sysModrId})
+    </insert>
+
+    <insert id="insertOpClmInfo" parameterType="opClmInfo">
+        INSERT INTO OP_CLM_INFO(ORD_NO,
+                                ORD_GOODS_NO,
+                                ORD_ITEM_NO,
+                                ORD_SEQ,
+                                PROC_SEQ,
+                                ORD_CLM_TP_CD,
+                                ORD_PRGS_SCD,
+                                DV_RVT_CCD,
+                                ORD_AMT,
+                                ORD_CNT,
+                                CNCL_CNT,
+                                RTGS_CNT,
+                                DV_GRP_NO,
+                                ORD_CLM_REQ_DTIME,
+                                ORD_CLM_ACPT_DTIME,
+                                ORD_CLM_CMT_DTIME,
+                                CLM_RSN_CD,
+                                CLM_DTL_RSN_TT,
+                                SYS_REG_DTIME,
+                                SYS_REGR_ID,
+                                SYS_MOD_DTIME,
+                                SYS_MODR_ID,
+                                CLM_NO,
+                                ORG_PROC_SEQ)
+        VALUES (#{ordNo},
+                #{ordGoodsNo},
+                #{ordItemNo},
+                #{ordSeq},
+                #{procSeq},
+                #{ordClmTpCd},
+                #{ordPrgsScd},
+                #{dvRvtCcd},
+                #{ordAmt},
+                #{ordCnt},
+                #{cnclCnt},
+                #{rtgsCnt},
+                #{dvGrpNo},
+                #{ordClmReqDtime},
+                #{ordClmAcptDtime},
+                #{ordClmCmtDtime},
+                #{clmRsnCd},
+                #{clmDtlRsnTt},
+                now(),
+                #{sysRegrId},
+                now(),
+                #{sysModrId},
+                #{clmNo},
+                #{orgProcSeq})
+    </insert>
+
+    <insert id="insertOpDvpAreaInfo" parameterType="opDvpAreaInfo">
+        INSERT INTO OP_DVP_AREA_INFO(ORD_NO,
+                                     DVP_SEQ,
+                                     RMTI_NM,
+                                     RMTI_HP_NO,
+                                     RMTI_ADDR,
+                                     RMTI_ADDR_DTL,
+                                     SYS_REG_DTIME,
+                                     SYS_REGR_ID,
+                                     SYS_MOD_DTIME,
+                                     SYS_MODR_ID)
+        VALUES (#{ordNo},
+                #{dvpSeq},
+                #{rmtiNm},
+                #{rmtiHpNo},
+                #{rmtiAddr},
+                #{rmtiAddrDtl},
+                now(),
+                #{sysRegrId},
+                now(),
+                #{sysModrId})
+    </insert>
+
+    <insert id="insertOpOrdCostInfo" parameterType="opOrdCostInfo">
+        INSERT INTO OP_ORD_COST_INFO(ORD_CST_NO,
+                                     DV_GRP_NO,
+                                     APLY_CCD,
+                                     ORG_ORD_CST_NO,
+                                     CLM_NO,
+                                     ORD_NO,
+                                     DV_AMT_TP_CD,
+                                     ORG_DV_AMT,
+                                     DV_BNF_AMT,
+                                     APLY_DV_AMT,
+                                     IMTN_RSN_CCD,
+                                     SYS_REG_DTIME,
+                                     SYS_REGR_ID,
+                                     SYS_MOD_DTIME,
+                                     SYS_MODR_ID,
+                                     DV_PLC_TP_CD,
+                                     CNCL_DV_AMT)
+        VALUES (#{ordCstNo},
+                #{dvGrpNo},
+                #{aplyCcd},
+                #{orgOrdCstNo},
+                #{clmNo},
+                #{ordNo},
+                #{dvAmtTpCd},
+                #{orgDvAmt},
+                #{dvBnfAmt},
+                #{aplyDvAmt},
+                #{imtnRsnCcd},
+                now(),
+                #{sysRegrId},
+                now(),
+                #{sysModrId},
+                #{dvPlcTpCd},
+                #{cnclDvAmt})
+    </insert>
+
+    <insert id="insertOpDvpInfo" parameterType="opDvpInfo">
+        INSERT INTO OP_DVP_INFO(DV_GRP_NO,
+                                ORD_NO,
+                                DVP_SEQ,
+                                SYS_REG_DTIME,
+                                SYS_REGR_ID,
+                                SYS_MOD_DTIME,
+                                SYS_MODR_ID,
+                                DV_MTHD_CD)
+        VALUES (#{dvGrpNo},
+                #{ordNo},
+                #{dvpSeq},
+                now(),
+                #{sysRegrId},
+                now(),
+                #{sysModrId},
+                #{dvMthdCd})
+    </insert>
+
+    <insert id="insertOpOrdBnfInfo" parameterType="opOrdBnfInfo">
+        INSERT INTO OP_ORD_BNF_INFO(ORD_BNF_NO,
+                                    ORD_BNF_AMT,
+                                    PRM_NO,
+                                    CPN_ISS_NO,
+                                    ORD_CNCL_BNF_AMT,
+                                    DEGR_CCD,
+                                    SYS_REG_DTIME,
+                                    SYS_REGR_ID,
+                                    SYS_MOD_DTIME,
+                                    SYS_MODR_ID,
+                                    CPN_KND_CD)
+        VALUES (#{ordBnfNo},
+                #{ordBnfAmt},
+                #{prmNo},
+                #{cpnIssNo},
+                #{ordCnclBnfAmt},
+                #{degrCcd},
+                now(),
+                #{sysRegrId},
+                now(),
+                #{sysModrId},
+                #{cpnKndCd})
+    </insert>
+
+    <insert id="insertOpOrdBnfRelInfo" parameterType="opOrdBnfRelInfo">
+        INSERT INTO OP_ORD_BNF_REL_INFO(ORD_NO,
+                                        ORD_SEQ,
+                                        PROC_SEQ,
+                                        ORD_BNF_NO,
+                                        APLY_CNCL_CCD,
+                                        APLY_AMT,
+                                        CLM_NO,
+                                        SYS_REG_DTIME,
+                                        SYS_REGR_ID,
+                                        SYS_MOD_DTIME,
+                                        SYS_MODR_ID)
+        VALUES (#{ordNo},
+                #{ordSeq},
+                #{procSeq},
+                #{ordBnfNo},
+                #{aplyCnclCcd},
+                #{aplyAmt},
+                #{clmNo},
+                now(),
+                #{sysRegrId},
+                now(),
+                #{sysModrId})
+    </insert>
 </mapper>

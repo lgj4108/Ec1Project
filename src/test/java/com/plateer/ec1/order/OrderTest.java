@@ -33,7 +33,9 @@ public class OrderTest {
 
     @Test
     public void serviceTest() {
+        OrderRequestVO orderReq = new OrderRequestVO();
+        orderReq.setOrdNo(orderService.getOrdNoNextval());
 
-        orderService.order(new OrderRequestVO());
+        orderService.order(orderReq);
     }
 }

@@ -25,7 +25,6 @@ public class OrderHistoryServiceImpl implements OrderHistoryService {
         try {
             logModel = getInsertLogModel(args);
             orderTrxMapper.insertOrderHistory(logModel);
-            throw new NullPointerException();
         } catch (Exception ex) {
             log.info("Ex: {}", ex);
         }
@@ -48,7 +47,6 @@ public class OrderHistoryServiceImpl implements OrderHistoryService {
     public void updateOrderHistory(OpOrdClmMntLog logModel, Object result, Exception exceptionHolder) {
         try {
             orderTrxMapper.updateOrderHistory(getUpdateLogModel(logModel, result, exceptionHolder));
-            throw new NullPointerException();
         } catch(Exception ex) {
             log.info("update monitoring Ex: {}", ex);
         }
