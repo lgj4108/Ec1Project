@@ -8,9 +8,25 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class OrderRequestVO extends OrderClaimBaseVO{
+
+    private OrderBaseVO orderBase;
     private List<OrderProductVO> orderProducts;
     private List<OrderDeliveryAreaVO> orderDeliveryAreas;
     private List<OrderBenefitVO> orderBenefits;
+
+    @Data
+    public static class OrderBaseVO {
+        private String mbrNo;
+        private String ordTpCd;
+        private String ordSysCcd;
+        private String ordNm;
+        private String ordSellNo;
+        private String ordAddr;
+        private String ordAddrDtl;
+        private String rfndBnkCk;
+        private String rfndAcctNo;
+        private String rfndAcctOwnNm;
+    }
 
     @Data
     public static class OrderProductBaseVO {

@@ -36,6 +36,14 @@ public class OrderTest {
         OrderRequestVO orderReq = new OrderRequestVO();
         orderReq.setOrdNo(orderService.getOrdNoNextval());
 
+        OrderRequestVO.OrderBaseVO orderBase = new OrderRequestVO.OrderBaseVO();
+        orderBase.setMbrNo("");
+        orderBase.setOrdNm("");
+        orderBase.setOrdTpCd("10");
+        orderBase.setOrdSysCcd("10");
+//        orderBase.set
+        orderReq.setOrderBase(orderBase);
+
         orderService.order(orderReq);
     }
 }

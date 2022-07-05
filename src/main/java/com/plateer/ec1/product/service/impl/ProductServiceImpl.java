@@ -14,6 +14,12 @@ public class ProductServiceImpl implements ProductService {
     private final ProductMapper productMapper;
     @Override
     public List<ProductInfoVO> getProductList() {
-        return productMapper.getProductList();
+//        return productMapper.getProductList();
+        return null;
+    }
+
+    @Override
+    public List<ProductInfoVO> getProductList(List<ProductInfoVO> param) {
+        return productMapper.getProductList(param);
     }
 }

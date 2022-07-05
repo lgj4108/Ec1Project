@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ProductService {
     List<ProductInfoVO> getProductList();
+
+    List<ProductInfoVO> getProductList(List<ProductInfoVO> param);
 }

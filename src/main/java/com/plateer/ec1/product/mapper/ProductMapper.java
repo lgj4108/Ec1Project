@@ -9,5 +9,5 @@ import java.util.List;
 @Mapper
 @Alias("productMapper")
 public interface ProductMapper {
-    List<ProductInfoVO> getProductList();
+    List<ProductInfoVO> getProductList(List<ProductInfoVO> productList);
 }

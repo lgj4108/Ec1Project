@@ -15,5 +15,10 @@
              , sale_prc
         from pr_goods_base pgb
                  inner join pr_item_info pii on pgb.goods_no = pii.goods_no
+        <if test="!@org.springframework.util.CollectionUtils@isEmpty(productList)">
+          <foreach collection="productList" item="product" separator="or" open="where">
+              pgb.goods_no = #{product.goodsNo} and item_no = #{product.itemNo}
+          </foreach>
+        </if>
     </select>
 </mapper>
