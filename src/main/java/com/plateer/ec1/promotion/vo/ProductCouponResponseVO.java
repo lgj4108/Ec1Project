@@ -20,6 +20,11 @@ import java.util.stream.Collectors;
 public class ProductCouponResponseVO extends PromotionResponseBase {
     private List<CouponTargetProduct> targetProducts;
 
+    public ProductCouponResponseVO(String mbrNo, List<CouponTargetProduct> setPromotionByProduct) {
+        super(mbrNo);
+        this.targetProducts = setPromotionByProduct;
+    }
+
     public void setMaxBenefitYn() {
 
     }
