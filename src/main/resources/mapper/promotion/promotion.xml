@@ -9,6 +9,9 @@
         <result property="cpnUseDt" column="cpn_use_dt" />
         <result property="orgCpnIssNo" column="org_cpn_iss_no" />
         <result property="prmNm" column="prm_nm" />
+        <result property="prmKindCd" column="prm_kind_cd" />
+        <result property="prmPriodCcd" column="prm_priod_ccd" />
+        <result property="prmStdDd" column="prm_std_dd" />
         <result property="prmEndDt" column="prm_end_dt" />
         <result property="prmStrtDt" column="prm_strt_dt" />
         <result property="dcVal" column="dc_val" />
@@ -16,6 +19,9 @@
         <result property="dcCcd" column="dc_ccd" />
         <result property="minPurAmt" column="min_pur_amt" />
         <result property="cpnKindCd" column="cpn_kind_cd" />
+        <result property="maxDcAmt" column="max_dc_amt" />
+        <result property="sysRegDtime" column="sys_reg_dtime" />
+        <result property="degrCcd" column="degr_ccd" />
         <collection property="applyTargetList" ofType="com.plateer.ec1.promotion.vo.CouponInfo$PromotionApplyTarget">
             <result property="aplyTgtCcd" column="aply_tgt_ccd" />
             <result property="aplyTgtNo" column="aply_tgt_no" />
@@ -30,6 +36,7 @@
                org_cpn_iss_no,
                cpn_cert_no,
                ord_no,
+               cci.sys_reg_dtime,
                prm_nm,
                prm_kind_cd,
                prm_priod_ccd,

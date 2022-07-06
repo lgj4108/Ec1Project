@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -18,6 +20,10 @@ import java.util.stream.Collectors;
 public class ProductCouponResponseVO extends PromotionResponseBase {
     private String mbrNo;
     private List<CouponTargetProduct> targetProducts;
+
+    public void setMaxBenefitYn() {
+
+    }
 
     @Data
     @NoArgsConstructor
@@ -63,9 +69,13 @@ public class ProductCouponResponseVO extends PromotionResponseBase {
 
             return true;
         };
+
         private Predicate<CouponInfo> applyPrediCate = (p) ->
-                goodsPredicate.test(p.getApplyTargetList()) && specialPredicate.test(p.getApplyTargetList())
-                        && categoryPredicate.test(p.getApplyTargetList()) && companyPredicate.test(p.getApplyTargetList());
+                p.getMinPurAmt() <= this.getPrice()
+                        && goodsPredicate.test(p.getApplyTargetList())
+                        && specialPredicate.test(p.getApplyTargetList())
+                        && categoryPredicate.test(p.getApplyTargetList())
+                        && companyPredicate.test(p.getApplyTargetList());
 
         public void setApplyCoupons(List<CouponInfo> promotions) {
             this.applyCoupons = promotions.stream()
@@ -86,7 +96,9 @@ public class ProductCouponResponseVO extends PromotionResponseBase {
         private String maxDcYn = "N";
 
         public void calculateDcAmt(Long price) {
-            this.dcAmt = "10".equals(this.getDcCcd()) ? calcFixDcAmt(price) : calcRateDcAmt(price);
+            Long dcAmt = "10".equals(this.getDcCcd()) ? calcFixDcAmt(price) : calcRateDcAmt(price);
+
+            this.dcAmt = dcAmt > this.getMaxDcAmt() ? this.getMaxDcAmt() : dcAmt;
         }
 
         private Long calcFixDcAmt(Long price) {

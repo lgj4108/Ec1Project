@@ -9,6 +9,7 @@ import com.plateer.ec1.promotion.vo.PromotionRequestVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,28 +29,28 @@ public class ProductCouponCalculator implements PromotionCalculator {
 
     @Override
     public ProductCouponResponseVO getAvailablePromotion(PromotionRequestVO requestVO) {
-        return setAvailablePromotion(requestVO);
-    }
+        ProductCouponResponseVO productCouponResponseVO = new ProductCouponResponseVO(requestVO.getMbrNo(), setPromotionByProduct(requestVO));
+        productCouponResponseVO.setMaxBenefitYn();
 
-    private ProductCouponResponseVO setAvailablePromotion(PromotionRequestVO requestVO) {
-        return new ProductCouponResponseVO(requestVO.getMbrNo(), setPromotionByProduct(requestVO));
+        return productCouponResponseVO;
     }
 
     private List<ProductCouponResponseVO.CouponTargetProduct> setPromotionByProduct(PromotionRequestVO requestVO) {
-        final List<CouponInfo> promotions = getAvailablePromotions(requestVO.getMbrNo());
+        List<CouponInfo> promotions = getAvailablePromotions(requestVO.getMbrNo());
         return requestVO.getProductList().stream()
                 .map(rp -> {
                     ProductCouponResponseVO.CouponTargetProduct target = new ProductCouponResponseVO.CouponTargetProduct(rp);
                     target.setApplyCoupons(promotions);
                     return target;
                 })
+                .filter(p -> !CollectionUtils.isEmpty(p.getApplyCoupons()))
                 .collect(Collectors.toList());
     }
 
     private List<CouponInfo> getAvailablePromotions(String mbrNo) {
         return promotionBaseService.getPromotionData(mbrNo)
                 .stream()
-                .filter(p -> p.isValidBase("10"))
+                .filter(p -> p.isValidBase("10", "10"))
                 .collect(Collectors.toList());
     }
 

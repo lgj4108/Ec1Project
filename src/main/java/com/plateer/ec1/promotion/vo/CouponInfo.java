@@ -42,6 +42,7 @@ public class CouponInfo {
     private String certCd;
     private Integer ourChrgRt;
     private Integer entrChrgRt;
+    private LocalDateTime sysRegDtime;
 
     private List<PromotionApplyTarget> applyTargetList;
 
@@ -56,19 +57,16 @@ public class CouponInfo {
         }
     }
 
-    public boolean isValidBase(String cpnKindCd) {
-        return isPeriod() && isUseYn() && this.cpnKindCd.equals(cpnKindCd);
+    public boolean isValidBase(String prmKindCd,String cpnKindCd) {
+        return isPeriod() && isUseYn() && ("10".equals(prmKindCd) ? this.cpnKindCd.equals(cpnKindCd) : true);
     }
 
     public boolean isPeriod() {
-        return this.prmStrtDt.isBefore(LocalDateTime.now()) && this.prmEndDt.isAfter(LocalDateTime.now());
+        return "10".equals(this.prmPriodCcd) ? this.prmStrtDt.isBefore(LocalDateTime.now()) && this.prmEndDt.isAfter(LocalDateTime.now())
+                : this.sysRegDtime.plusDays(this.prmStdDd.longValue()).isAfter(LocalDateTime.now());
     }
 
     public boolean isUseYn() {
         return "Y".equals(this.useYn);
-    }
-
-    public boolean isOverAmt(Long price) {
-        return this.minPurAmt <= price;
     }
 }
