@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductCouponResponseVO extends PromotionResponseBase {
-    private String mbrNo;
     private List<CouponTargetProduct> targetProducts;
 
     public void setMaxBenefitYn() {
