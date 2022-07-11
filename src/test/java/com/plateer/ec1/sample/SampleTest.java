@@ -1,49 +1,27 @@
 package com.plateer.ec1.sample;
 
-import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+@Slf4j
 public class SampleTest {
 
-    @Data
-    public static class BaseVO {
-        private String memberNo;
-        private List<ProductVO> productVOS;
-    }
+    @Test
+    void streamTest() {
+        List<String> orgList = Arrays.asList("1", "2", "3", "4");
+        List<String> test = orgList.stream().filter(p -> p.equals("1")).collect(Collectors.toList());
+        log.info("orgList : {}, hash : {}, identity: {}, {}", orgList, orgList.hashCode(), System.identityHashCode(orgList));
+        log.info("orgList : {}, hash : {}, identity: {}", test, test.hashCode(), System.identityHashCode(test));
 
-    @Data
-    public static class ProductVO {
-        private String productNo;
-        private Long price;
-    }
 
-    @Data
-    public static class CouponResponse {
-        private Long couponNo;
-        public String type;
-        private Long price;
-        private Long benefitPrice;
+        assertThat(orgList).isNotSameAs(orgList.stream().collect(Collectors.toList()));
 
-        public void calculateBenefitPrice(Long productPrice) {
-            this.benefitPrice = productPrice / this.price;
-        }
-    }
-
-    @Data
-    public static class ProductCouponResponse {
-        private ProductVO productVO;
-        private List<CouponResponse> coupons;
-
-        public void setCouponInfo(List<CouponResponse> coupons) {
-            this.coupons = coupons;
-            coupons.forEach(i -> i.calculateBenefitPrice(this.productVO.price));
-        }
-    }
-
-    @Data
-    public static class ResposneVO {
-        private String memberNo;
-        private List<ProductCouponResponse> productCouponResponses;
     }
 }

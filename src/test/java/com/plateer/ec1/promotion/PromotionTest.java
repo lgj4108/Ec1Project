@@ -2,21 +2,19 @@ package com.plateer.ec1.promotion;
 
 import com.plateer.ec1.promotion.mapper.PromotionMapper;
 import com.plateer.ec1.promotion.service.PromotionService;
-import com.plateer.ec1.promotion.vo.CouponInfo;
-import com.plateer.ec1.promotion.vo.ProductCouponResponseVO;
-import com.plateer.ec1.promotion.vo.PromotionRequestVO;
+import com.plateer.ec1.promotion.vo.*;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 @SpringBootTest
 @Slf4j
@@ -35,13 +33,29 @@ public class PromotionTest {
     }
 
     @Test
+    void getPromotionData() {
+        PromotionRequestVO param = new PromotionRequestVO();
+        param.setMbrNo("test01");
+
+        List<ProductRequest> productList = new ArrayList<>();
+        productList.add(new ProductRequest("P001", 1, 29900L, "", "", ""));
+        productList.add(new ProductRequest("P002", 1, 10900L, "", "", ""));
+        param.setProductList(productList);
+
+        List<CouponSerializeVO> datas = promotionMapper.getAllPromotionDataWithProduct(param);
+
+        assertThat(datas.stream().filter(d -> d.getCpnKindCd().equals("10")).count()).isEqualTo(1L);
+    }
+
+
+    @Test
     public void productCouponTest() {
         PromotionRequestVO param = new PromotionRequestVO();
         param.setMbrNo("test01");
 
-        List<PromotionRequestVO.ProductRequest> productList = new ArrayList<>();
-        productList.add(new PromotionRequestVO.ProductRequest("P001", 1, 29900L, "", "", ""));
-        productList.add(new PromotionRequestVO.ProductRequest("P002", 1, 10900L, "", "", ""));
+        List<ProductRequest> productList = new ArrayList<>();
+        productList.add(new ProductRequest("P001", 1, 29900L, "", "", ""));
+        productList.add(new ProductRequest("P002", 1, 10900L, "", "", ""));
         param.setProductList(productList);
 
 
@@ -50,7 +64,7 @@ public class PromotionTest {
         assertThat(productCouponApplyData.getMbrNo()).isNotBlank();
         assertThat(productCouponApplyData.getTargetProducts().size()).isEqualTo(1);
         assertThat(productCouponApplyData.getTargetProducts().stream()
-                .map(ProductCouponResponseVO.CouponTargetProduct::getApplyCoupons).count()).isEqualTo(1L);
+                .map(CouponTargetProduct::getApplyCoupons).count()).isEqualTo(1L);
 
         log.info("testData: {}", productCouponApplyData);
     }
@@ -61,18 +75,18 @@ public class PromotionTest {
         PromotionRequestVO param = new PromotionRequestVO();
         param.setMbrNo("test02");
 
-        List<PromotionRequestVO.ProductRequest> productList = new ArrayList<>();
-        productList.add(new PromotionRequestVO.ProductRequest("P001", 1, 29000L, "", "", ""));
-        productList.add(new PromotionRequestVO.ProductRequest("P001", 2, 58000L, "", "", ""));
-        productList.add(new PromotionRequestVO.ProductRequest("P002", 1, 20500L, "", "", ""));
-        productList.add(new PromotionRequestVO.ProductRequest("P002", 2, 10250L, "", "", ""));
-        productList.add(new PromotionRequestVO.ProductRequest("P005", 1, 9000L, "", "", ""));
-        productList.add(new PromotionRequestVO.ProductRequest("P005", 2, 9000L, "", "", ""));
-        productList.add(new PromotionRequestVO.ProductRequest("P005", 3, 9000L, "", "", ""));
-        productList.add(new PromotionRequestVO.ProductRequest("P006", 0, 140000L, "", "", ""));
-        productList.add(new PromotionRequestVO.ProductRequest("P007", 1, 24000L, "", "", ""));
-        productList.add(new PromotionRequestVO.ProductRequest("P007", 2, 48000L, "", "", ""));
-        productList.add(new PromotionRequestVO.ProductRequest("P007", 3, 24000L, "", "", ""));
+        List<ProductRequest> productList = new ArrayList<>();
+        productList.add(new ProductRequest("P001", 1, 29000L, "", "", ""));
+        productList.add(new ProductRequest("P001", 2, 29000L, "", "", ""));
+        productList.add(new ProductRequest("P002", 1, 20500L, "", "", ""));
+        productList.add(new ProductRequest("P002", 2, 10250L, "", "", ""));
+        productList.add(new ProductRequest("P005", 1, 9000L, "", "", ""));
+        productList.add(new ProductRequest("P005", 2, 9000L, "", "", ""));
+        productList.add(new ProductRequest("P005", 3, 9000L, "", "", ""));
+        productList.add(new ProductRequest("P006", 0, 140000L, "", "", ""));
+        productList.add(new ProductRequest("P007", 1, 24000L, "", "", ""));
+        productList.add(new ProductRequest("P007", 2, 48000L, "", "", ""));
+        productList.add(new ProductRequest("P007", 3, 24000L, "", "", ""));
         param.setProductList(productList);
 
         ProductCouponResponseVO productCouponApplyData = promotionService.getProductCouponApplyData(param);
@@ -82,15 +96,14 @@ public class PromotionTest {
         log.info("testData: {}", productCouponApplyData);
     }
 
-    private List<ProductCouponResponseVO.CouponTargetProduct> setPromotionByProduct(PromotionRequestVO requestVO) {
-        List<CouponInfo> promotions = new ArrayList<>();
-        return requestVO.getProductList().stream()
-                .map(rp -> {
-                    ProductCouponResponseVO.CouponTargetProduct target = new ProductCouponResponseVO.CouponTargetProduct(rp);
-                    target.setApplyCoupons(promotions);
-                    return target;
-                })
-                .filter(p -> !CollectionUtils.isEmpty(p.getApplyCoupons()))
-                .collect(Collectors.toList());
+    @Test
+    void cutTest() {
+
+        int value = 10111;
+        long longValue = BigDecimal.valueOf(value).setScale(-1, RoundingMode.DOWN).longValue();
+
+        log.info("cut value : {}", longValue);
+        assertThat(longValue).isLessThan(value);
+        assertThat(longValue).isEqualTo(value - 1);
     }
 }

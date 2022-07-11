@@ -18,6 +18,6 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     public ProductCouponResponseVO getProductCouponApplyData(PromotionRequestVO request) {
-        return (ProductCouponResponseVO) factory.getFactory(PromotionType.PRODUCT).getAvailablePromotion(request);
+        return (ProductCouponResponseVO) factory.getFactory(PromotionType.PRODUCT).getCalculationData(request);
     }
 }

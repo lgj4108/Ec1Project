@@ -1,9 +1,12 @@
 package com.plateer.ec1.promotion.vo;
 
+import com.plateer.ec1.promotion.enums.CouponKindCode;
+import com.plateer.ec1.promotion.enums.PromotionKindCode;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 public class CouponInfo {
@@ -46,19 +49,12 @@ public class CouponInfo {
 
     private List<PromotionApplyTarget> applyTargetList;
 
-    @Data
-    public static class PromotionApplyTarget {
-        private String aplyTgtCcd;
-        private String aplyTgtNo;
-        private String useYn;
-
-        public boolean isTarget(PromotionRequestVO.ProductRequest product) {
-            return false;
-        }
+    public boolean isValidBase(PromotionKindCode prmKindCd, CouponKindCode cpnKindCd) {
+        return isPeriod() && isPromotionUseYn() && (PromotionKindCode.COUPON == prmKindCd ? this.cpnKindCd.equals(cpnKindCd.getCode()) : true);
     }
 
-    public boolean isValidBase(String prmKindCd,String cpnKindCd) {
-        return isPeriod() && isUseYn() && ("10".equals(prmKindCd) ? this.cpnKindCd.equals(cpnKindCd) : true);
+    public boolean isValidCouponBase(PromotionKindCode prmKindCd, CouponKindCode cpnKindCd) {
+        return isValidBase(prmKindCd, cpnKindCd) && isCouponUseYn();
     }
 
     public boolean isPeriod() {
@@ -66,7 +62,11 @@ public class CouponInfo {
                 : this.sysRegDtime.plusDays(this.prmStdDd.longValue()).isAfter(LocalDateTime.now());
     }
 
-    public boolean isUseYn() {
+    public boolean isPromotionUseYn() {
         return "Y".equals(this.useYn);
+    }
+
+    public boolean isCouponUseYn() {
+        return Objects.isNull(this.cpnUseDt);
     }
 }
