@@ -33,6 +33,11 @@ logging:
         transaction:
           interceptor: trace
 
+site:
+  url: http//localhost
+
 inicis:
   vacct:
     url: https://iniapi.inicis.com/api/v1/formpay
+    mid: INIpayTest
+    apikey: ItEQKi3rY7uvDS8l

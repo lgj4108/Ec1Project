@@ -1,6 +1,6 @@
-package com.plateer.ec1.payment.vo.request.inicis;
+package com.plateer.ec1.payment.vo.inicis.vitualaccount;
 
-import com.plateer.ec1.payment.vo.request.PaymentRequestVO;
+import com.plateer.ec1.payment.vo.PaymentRequestVO;
 import lombok.Data;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -8,7 +8,7 @@ import org.springframework.util.MultiValueMap;
 import java.lang.reflect.Field;
 
 @Data
-public class InicisApproveRequestVO extends PaymentRequestVO {
+public class InicisApproveRequestVO {
     private String type;
     private String paymethod;
     private String timestamp;

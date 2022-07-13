@@ -1,4 +1,4 @@
-package com.plateer.ec1.payment.vo.request;
+package com.plateer.ec1.payment.vo;
 
 import com.plateer.ec1.payment.enums.PaymentType;
 import lombok.Data;

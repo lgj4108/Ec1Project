@@ -16,7 +16,7 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping("getProductList")
+    @GetMapping("/getProductList")
     public List<ProductInfoVO> getProductList() {
         return productService.getProductList();
     }
